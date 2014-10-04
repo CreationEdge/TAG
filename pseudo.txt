@@ -1,0 +1,72 @@
+
+initialInput = get user input
+
+shorcutCommands[] = query DB.Shortcuts
+
+String<validCommands[]> = query DB.Commands
+
+cleanInput = initialInput.trim() + initialInput.split("\\s+")
+
+
+How should the commands be stored? 
+Types of commands:
+	put this in that thusly
+	say this to them thusly
+	attack that with this
+	put my thing in my object thusly
+	
+
+put {whose thing, what thing, preposition, whose object, what object, adverb}
+6 args? Would not store like this though. Would need to store the built-in commands that the args would execute
+
+put becomes:
+	@move #item #preposition #location
+	@displayUser	#Pronoun2nd +	#Verb2nd +	#itemPossesive +	#item	#preposition	#locationPosessive	#location	#adverb
+					You				put/set		your/the/a			axe		in/on/onto		your/the/Player's	belt/bag	quickly
+	@displayWorld	#Username +		#Verb3rd +	#itemPossesive + 	#item	#preposition	#locationPosessive	#location	#adverb
+					Player			puts/sets	his/her/their/its	axe		in/on/onto		your/the/Player's	belt/bag	quickly
+					
+	
+	@move {callingPlayer, objectToMove, targetLocation, preposition) {}
+	
+	"Put my sword in my sheath"
+		Put needs to call @move, but needs to check properties first
+			@movePrepare(callingPlayer, String... args)
+				Send player.getID
+				Send commandInput
+				
+					commandInput = new String[cleanInput.length() - 1]
+						for(i = 0; i < commandInput.length; ++i) {
+							commandInput[i] = cleanInput[i+1];
+						}
+				
+				int params = commandInput.length();
+				
+				if (params == 2) {
+					call @moveClean(player, commandInput[0], commandInput[1])
+				}
+					
+	//Overloaded
+	@moveClean(String player, String object, String target) {
+		location = player.getLocation();
+		ArrayList<String[]> contents = location.getContents(); //getContents should sort alphabetically
+			(Contents should contain: {objectID, objectName})
+		
+		validObject = 0; 
+		
+			for(String[] currObject : contents) {
+				if(currObject[this][1].beginsWith(object) {
+					//This object is the first match
+					objectID = currObject[this][0];
+					validObject = 1;
+				}
+			}
+			
+			if(validObject) {
+				//Check object permissions and rest of command
+			}
+		
+			else {
+				//Invalid object, exit command. 
+			}
+	}

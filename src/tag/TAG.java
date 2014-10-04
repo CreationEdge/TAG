@@ -17,8 +17,22 @@ public class TAG {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        InputTextArea inputArea = new InputTextArea();
+        InputTextArea screen;
+        screen = new InputTextArea();
+        
+       
+        
+      //  InputTextArea.main(args);
+        
+        TagWorld world = new TagWorld();
+        
+        screen.textArea.append("Testing the APPEND");
+        
+        TagObject object;
+        
+        object = new TagObject(world, "NEW OBJECT");
+        
+        screen.textArea.append("\n" + object.objectName + "\n");
         
         
     }

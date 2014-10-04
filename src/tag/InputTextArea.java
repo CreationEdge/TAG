@@ -13,65 +13,131 @@ package tag;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.*;
 
 public class InputTextArea extends JPanel implements ActionListener {
     protected JTextField textField;
     protected JTextArea textArea;
-
-        /**
- * @param args the command line arguments
- */
-public static void main(String[] args) {
-    // TODO code application logic here
-    javax.swing.SwingUtilities.invokeLater(new Runnable() {
-        public void run() {
-            createAndShowGUI();
-        }
-        
-    });
-}
-
-    public InputTextArea() {
+    protected JFrame frame;
+     public InputTextArea() {
         super(new GridBagLayout());
-
-        textField = new JTextField(20);
+        
+        
+        
+        textField = new JTextField(60);
         textField.addActionListener(this);
 
-        textArea = new JTextArea(5, 20);
+        textArea = new JTextArea(10, 60);
+        textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
 
         //Add components
         GridBagConstraints c = new GridBagConstraints();
         c.gridwidth = GridBagConstraints.REMAINDER;
-
-        c.fill = GridBagConstraints.HORIZONTAL;
-        add(textField, c);
-
+        
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1.0;
         c.weighty = 1.0;
         add(scrollPane, c);
+        
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        add(textField, c);
+        
+        
+        textField.requestFocusInWindow();
+        
+        String[][] strArray =  new String[][] {
+            {"id1","name1"},
+            {"id2","name2"}
+        };
+        
+        ArrayList<String[]> list = new ArrayList<>(strArray.length);
+        list.addAll(Arrays.asList(strArray));
+        
+        list.stream().forEach((listItem) -> {
+            textArea.append(listItem[1] + "\n");
+        });
+        
+//        javax.swing.SwingUtilities.invokeLater(new Runnable() {;;
+//            public void run() {
+//            createAndShowGUI();
+//            
+//            }
+//        
+//        });
+        
+        frame = new JFrame("Text Demo");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        frame.add(this);
+
+        frame.pack();
+        frame.setVisible(true);    
+    
 
     }
 
     public void actionPerformed(ActionEvent evt) {
         String text = textField.getText();
-        textArea.append(text + "\n");
+        String regex = "(^\')|(\\s+)";
+        
+        text.trim();
+        
+        String[] split = text.split(regex);
+        
+        int max = split.length;
+        
+        if(split[0].equals("")) {
+                textArea.append("You say, \"");
+                
+                for(int i = 1; i < max; i++) {
+                   textArea.append(split[i]);
+                   
+                   if(i != max - 1) {
+                       textArea.append(" ");
+                   }
+                }
+                
+                textArea.append("\"");
+                
+            }
+        
+        else {
+
+            for(int i = 0; i < max; i++) {
+
+                textArea.append((i+1) + " " + split[i] + "\n");
+            }
+           // textArea.append(text + "\n");
+        }
+        
         textField.selectAll();
+        
+        
 
         textArea.setCaretPosition(textArea.getDocument().getLength());
+       
     }
 
-    private static void createAndShowGUI() {
-        JFrame frame = new JFrame("Text Demo");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        frame.add(new InputTextArea());
-
-        frame.pack();
-        frame.setVisible(true);
+    public void addText() {
+        
+        textArea.append("Testing addText()\n");
     }
+    
+    
+//    protected void createAndShowGUI() {
+//        frame = new JFrame("Text Demo");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//
+//        frame.add(new InputTextArea());
+//
+//        frame.pack();
+//        frame.setVisible(true);    
+//        textArea.append("create and show test");
+//    }
 
 
 }
