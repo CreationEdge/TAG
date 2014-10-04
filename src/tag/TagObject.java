@@ -28,5 +28,5 @@ public class TagObject {
         objectName = name;
         
        // tagWorld.addToWorld(objectID, objectName);
-    }
+    }  
 }

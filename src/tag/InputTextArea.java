@@ -15,6 +15,8 @@ import java.awt.GridBagLayout;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Vector;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.*;
 
 public class InputTextArea extends JPanel implements ActionListener {
@@ -50,15 +52,23 @@ public class InputTextArea extends JPanel implements ActionListener {
         textField.requestFocusInWindow();
         
         String[][] strArray =  new String[][] {
-            {"id1","name1"},
-            {"id2","name2"}
+            {"123","name1"},
+            {"234","name2"}
         };
+        
+        CopyOnWriteArrayList<String[]> cowlist;
+        cowlist = new CopyOnWriteArrayList<>();
+        cowlist.addAll(Arrays.asList(strArray));
         
         ArrayList<String[]> list = new ArrayList<>(strArray.length);
         list.addAll(Arrays.asList(strArray));
         
         list.stream().forEach((listItem) -> {
             textArea.append(listItem[1] + "\n");
+        });
+        
+        cowlist.stream().forEach((listItem) -> {
+            textArea.append("ID: " + listItem[0] + " NAME: " + listItem[0] + "\n");
         });
         
 //        javax.swing.SwingUtilities.invokeLater(new Runnable() {;;
