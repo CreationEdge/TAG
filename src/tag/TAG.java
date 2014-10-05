@@ -19,10 +19,20 @@ public class TAG {
     public static void main(String[] args) {
         InputTextArea screen;
         screen = new InputTextArea();
+        String testArray[][] =  {
+            {"Prop1","1"},
+            {"Prop2","alpha"},
+            {"Prop3","1"},
+            {"Prop4","alpha"},
+            {"Prop5","$"},
+            {"Prop6","#"},
+            {"Prop7","`"},
+            {"Prop8","0"},
         
-       
+        };
         
-      //  InputTextArea.main(args);
+
+        
         
         TagWorld world = new TagWorld();
         
@@ -34,6 +44,33 @@ public class TAG {
         
         screen.textArea.append("\n" + object.objectName + "\n");
         
+         for(int i = 0; i < testArray.length; ++i) {
+            String prop = testArray[i][0];
+            
+            if(testArray[i][1].matches("\\d+")) {
+                object.properties.add(new TagProperty(prop, Integer.parseInt(testArray[i][1]) ));
+            }
+            else {
+                object.properties.add(new TagProperty(prop, testArray[i][1]));
+            }
+            
+        }
+         
+        for(TagProperty prop : object.properties) {
+            String tempStr;
+            tempStr = prop.getPropName(); 
+            screen.textArea.append(tempStr + " ");
+            
+            if(prop.hasIntVal()) {
+                tempStr = prop.getPropIntVal().toString() + " is Integer";
+            }
+            else {
+                tempStr = prop.getPropStrVal() + " is String";
+            }
+            
+            screen.textArea.append(tempStr + "\n");
+                    
+        }
         
     }
     
