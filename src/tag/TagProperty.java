@@ -16,9 +16,9 @@ public class TagProperty {
     Val can be String or Integer
     */
     
-    public String name;
-    public String strVal = null;
-    public Integer intVal = null;
+    protected String name;
+    protected String strVal = null;
+    protected Integer intVal = null;
     
     TagProperty(String prop, String _val) {
         name = prop;

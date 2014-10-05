@@ -5,14 +5,18 @@
  */
 package tag;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  *
  * @author Grayson
  */
 public class TagWorld {
-    private static Integer[] allObjects;
+    //private static Integer[] allObjectIDs;
+    private ArrayList<Integer> allIDs;
+    protected ArrayList<TagObject> objects = null;
     
     TagWorld() {
         /*
@@ -29,7 +33,8 @@ public class TagWorld {
             
                 
         */
-        allObjects = new Integer[]{1,2,3,4,5};
+        
+        //allObjectIDs = new Integer[]{1,2,3,4,5};
         
     }
     
@@ -38,25 +43,45 @@ public class TagWorld {
      * @return
      */
     public Integer getNextFree() {
-        Arrays.sort(allObjects);
-        Integer value = 0;
+        Integer value = 1;
+        
+        
+        
+        if(objects != null) {
+            Integer length = objects.size();
+    
+            Integer currIDs[] = new Integer[length];
 
-        for(int i = 0; i < allObjects.length; ++i) {
-            int next = i + 1;
-            if(next < allObjects.length) { //Next is in the array
-                if(allObjects[i]+1 != allObjects[next]) {
-                    //Then the next value is 1 or more greater than current
-                    //Return current(i) + 1, since it will be free
-                    value = i + 1;
-                    break;
-                }
-                else { //Next is not in the array. Return i + 1
-                    value = i + 1;
-                    break;
+            for(int i=0; i < length; i++) {
+                currIDs[i] = objects.get(i).getID();
+            }
+
+            Arrays.sort(currIDs);
+
+            for(int i = 0; i < currIDs.length; ++i) {
+                int next = i + 1;
+                if(next < currIDs.length) { //Next is in the array
+                    if(currIDs[i]+1 != currIDs[next]) {
+                        //Then the next value is 1 or more greater than current
+                        //Return current(i) + 1, since it will be free
+                        value = i + 1;
+                        break;
+                    }
+                    else { //Next is not in the array. Return i + 1
+                        value = i + 1;
+                        break;
+                    }
                 }
             }
         }
-
         return value;
     }
+    
+    protected void createNewObject(String name) {
+        if(objects == null) {
+            objects = new ArrayList<>();
+        }
+        objects.add(new TagObject(this, name));
+    }
+    
 }

@@ -43,15 +43,32 @@ public class TagObject {
     }
     
     TagObject(TagWorld world, String name) {
-        objectID = world.getNextFree();
-        objectName = name;
-        
-        properties = new ArrayList<>();
-        
-        properties.add(new TagProperty("id", objectID));
-        properties.add(new TagProperty("name", objectName));
+        this(world, world.getNextFree().toString(), name);
         
        // this.mkDummyProps();
        // tagWorld.addToWorld(objectID, objectName);
     }  
+    
+    TagObject(TagWorld world, String id, String name) {
+        properties = new ArrayList<>();
+        
+        properties.add(new TagProperty("id", Integer.parseInt(id)));
+        properties.add(new TagProperty("name", name));
+    }
+    
+    protected TagProperty getPropByName(String name) {
+        for(TagProperty prop : properties) {
+            if(prop.getPropName().equals(name)) {
+                return prop;
+            }
+        }
+        return null;
+    }
+    
+    protected Integer getID() {
+        Integer val;
+        val = this.getPropByName("id").getPropIntVal();
+        return val;
+    }
+
 }

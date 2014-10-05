@@ -15,7 +15,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Vector;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.*;
 
@@ -137,18 +136,5 @@ public class InputTextArea extends JPanel implements ActionListener {
         textArea.append("Testing addText()\n");
     }
     
-    
-//    protected void createAndShowGUI() {
-//        frame = new JFrame("Text Demo");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//
-//        frame.add(new InputTextArea());
-//
-//        frame.pack();
-//        frame.setVisible(true);    
-//        textArea.append("create and show test");
-//    }
-
-
 }
 

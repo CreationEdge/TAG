@@ -37,26 +37,25 @@ public class TAG {
         TagWorld world = new TagWorld();
         
         screen.textArea.append("Testing the APPEND");
+                
+        world.createNewObject("NEW OBJECT");
         
-        TagObject object;
-        
-        object = new TagObject(world, "NEW OBJECT");
-        
-        screen.textArea.append("\n" + object.objectName + "\n");
-        
-         for(int i = 0; i < testArray.length; ++i) {
+        for(TagObject obj : world.objects) {
+            screen.textArea.append("\n PRINT ALL OBJECTS: " + obj.getPropByName("name").getPropStrVal() + "\n");
+        }
+            for(int i = 0; i < testArray.length; ++i) {
             String prop = testArray[i][0];
             
             if(testArray[i][1].matches("\\d+")) {
-                object.properties.add(new TagProperty(prop, Integer.parseInt(testArray[i][1]) ));
+                world.objects.get(0).properties.add(new TagProperty(prop, Integer.parseInt(testArray[i][1])));
             }
             else {
-                object.properties.add(new TagProperty(prop, testArray[i][1]));
+                world.objects.get(0).properties.add(new TagProperty(prop, testArray[i][1]));
             }
             
         }
          
-        for(TagProperty prop : object.properties) {
+        for(TagProperty prop : world.objects.get(0).properties) {
             String tempStr;
             tempStr = prop.getPropName(); 
             screen.textArea.append(tempStr + " ");
