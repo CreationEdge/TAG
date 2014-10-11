@@ -7,8 +7,6 @@ package tag;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import javax.swing.JTextArea;
-import jdk.nashorn.internal.runtime.regexp.RegExp;
 
 /**
  *
@@ -45,9 +43,6 @@ public class TagWorld {
      */
     public Integer getNextFree() {
         Integer value = 1;
-        
-        
-        
         if(objects != null) {
             Integer length = objects.size();
     
@@ -121,9 +116,4 @@ public class TagWorld {
             TAG.screen.textArea.append("\"\n");
         }   
     }
-    
-    protected void close() {
-        System.exit(0);
-    }
-    
 }

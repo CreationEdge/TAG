@@ -17,18 +17,24 @@ public class TAG {
     protected static TagWorld world;
     protected static ITA screen;
     protected static CopyOnWriteArrayList<String> commands;
+    protected static CommandReader commander;
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+        commander = new CommandReader();
         
         commands = new CopyOnWriteArrayList<>();
         
-        commands.add("close");
-        commands.add("say");
-        
+        commander.addCommand("close");
+        commander.addCommand("say");
+        commander.addCommand("testp");
+        String[] blank;
+        blank = new String[] {""};
+        commander.getCommandByName("close").addCommandParams("close", blank);
+        commander.getCommandByName("say").addCommandParams("say", blank);
+        commander.getCommandByName("testp").addCommandParams("testp", blank);
   
         //Create the world
         world = new TagWorld();
@@ -40,12 +46,12 @@ public class TAG {
         
         screen.textField.requestFocusInWindow();
         
-        screen.textArea.append("Testing the APPEND");
+        //screen.textArea.append("Testing the APPEND");
                 
         //Add an object to the world
         world.createNewObject("NEW OBJECT");
         
-        screen.testPrintAll(world);
+        //screen.testPrintAll(world);
         
         screen.textField.requestFocusInWindow();
     }
