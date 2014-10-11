@@ -7,7 +7,8 @@ package tag;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
+import javax.swing.JTextArea;
+import jdk.nashorn.internal.runtime.regexp.RegExp;
 
 /**
  *
@@ -82,6 +83,47 @@ public class TagWorld {
             objects = new ArrayList<>();
         }
         objects.add(new TagObject(this, name));
+    }
+    
+    protected void sayTo(String[] text, String command) {
+        Integer max = text.length;    
+        String[] firstWord;
+        Boolean isShortcut = false;
+        String regex = "^\'";
+        
+        if(command.equals("'")) {
+            command = "say";
+            isShortcut = true;
+        }
+
+        if(isShortcut) {
+            firstWord = text[0].split(regex);  
+            if(firstWord.length > 1) {
+                TAG.screen.textArea.append("You " + command + ", \"" + firstWord[1]);
+                for(int i = 1; i < max; i++) {
+                    TAG.screen.textArea.append(" ");
+
+                    TAG.screen.textArea.append(text[i]);
+                  }
+                TAG.screen.textArea.append("\"\n");
+            }  
+          
+        }
+        
+        else {
+            TAG.screen.textArea.append("You " + command + ", \"");
+            for(int i = 1; i < max; i++) {
+                TAG.screen.textArea.append(text[i]);
+                if(i + 1 < max) {
+                    TAG.screen.textArea.append(" ");
+                }
+              }
+            TAG.screen.textArea.append("\"\n");
+        }   
+    }
+    
+    protected void close() {
+        System.exit(0);
     }
     
 }

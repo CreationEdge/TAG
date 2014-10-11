@@ -5,6 +5,8 @@
  */
 package tag;
 
+import java.util.concurrent.CopyOnWriteArrayList;
+
 /**
  *
  * @author Grayson
@@ -12,67 +14,39 @@ package tag;
 
 
 public class TAG {
-
+    protected static TagWorld world;
+    protected static ITA screen;
+    protected static CopyOnWriteArrayList<String> commands;
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        InputTextArea screen;
-        screen = new InputTextArea();
-        String testArray[][] =  {
-            {"Prop1","1"},
-            {"Prop2","alpha"},
-            {"Prop3","1"},
-            {"Prop4","alpha"},
-            {"Prop5","$"},
-            {"Prop6","#"},
-            {"Prop7","`"},
-            {"Prop8","0"},
-        
-        };
-        
-
         
         
-        TagWorld world = new TagWorld();
+        commands = new CopyOnWriteArrayList<>();
+        
+        commands.add("close");
+        commands.add("say");
+        
+  
+        //Create the world
+        world = new TagWorld();
+        
+        //Create the UI
+        screen = new ITA();
+        
+        screen.textField.setFocusable(true);
+        
+        screen.textField.requestFocusInWindow();
         
         screen.textArea.append("Testing the APPEND");
                 
+        //Add an object to the world
         world.createNewObject("NEW OBJECT");
         
-        for(TagObject obj : world.objects) {
-            screen.textArea.append("\n PRINT ALL OBJECTS: " + obj.getPropByName("name").getPropStrVal() + "\n");
-        }
-            for(int i = 0; i < testArray.length; ++i) {
-            String prop = testArray[i][0];
-            
-            if(testArray[i][1].matches("\\d+")) {
-                world.objects.get(0).properties.add(new TagProperty(prop, Integer.parseInt(testArray[i][1])));
-            }
-            else {
-                world.objects.get(0).properties.add(new TagProperty(prop, testArray[i][1]));
-            }
-            
-        }
-         
-        for(TagProperty prop : world.objects.get(0).properties) {
-            String tempStr;
-            tempStr = prop.getPropName(); 
-            screen.textArea.append(tempStr + " ");
-            
-            if(prop.hasIntVal()) {
-                tempStr = prop.getPropIntVal().toString() + " is Integer";
-            }
-            else {
-                tempStr = prop.getPropStrVal() + " is String";
-            }
-            
-            screen.textArea.append(tempStr + "\n");
-                    
-        }
+        screen.testPrintAll(world);
         
+        screen.textField.requestFocusInWindow();
     }
-    
-    
-    
 }

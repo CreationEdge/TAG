@@ -5,7 +5,7 @@
  */
 package tag;
 
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -16,7 +16,7 @@ public class TagObject {
     
     int objectID;       //Should be unique key
     String objectName;  //Not necessarily unique
-    ArrayList<TagProperty> properties;
+    CopyOnWriteArrayList<TagProperty> properties;
     
     TagProperty tempProp;
     Integer tempID;
@@ -50,7 +50,7 @@ public class TagObject {
     }  
     
     TagObject(TagWorld world, String id, String name) {
-        properties = new ArrayList<>();
+        properties = new CopyOnWriteArrayList<>();
         
         properties.add(new TagProperty("id", Integer.parseInt(id)));
         properties.add(new TagProperty("name", name));
