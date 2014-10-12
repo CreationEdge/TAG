@@ -14,11 +14,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class TagCommandList {
     protected String name;
-    protected Integer key;
     protected CopyOnWriteArrayList<TagParameters> parameters;
     
-    TagCommandList(Integer _key, String _name) {
-        key = _key;
+    TagCommandList(String _name) {
         name = _name;
         parameters = new CopyOnWriteArrayList<>();
         
@@ -26,28 +24,27 @@ public class TagCommandList {
 
     protected void addCommandParams(String sysCommand, String[] _params) {
         TagParameters params;
-        Integer childKey;
-        childKey = getNextChildKey();
-        params = new TagParameters(childKey, this.key, sysCommand, _params);
+        Integer i;
+        i = getNextIndex();
+        params = new TagParameters(i, sysCommand, _params);
         parameters.add(params);
     }
     
-    protected Integer getNextChildKey() {
+    protected Integer getNextIndex() {
         Integer value = 1;
         if(parameters != null) {
             Integer length = parameters.size();
-            Integer currKeys[] = new Integer[length];
+            Integer currIDs[] = new Integer[length];
             
             for(int i = 0; i < length; i++) {
-                currKeys[i] = parameters.get(i).key;
+                currIDs[i] = parameters.get(i).key;
             }
+            Arrays.sort(currIDs);      
             
-            Arrays.sort(currKeys);      
-            
-            for(int i = 0; i < currKeys.length; i++) {
+            for(int i = 0; i < currIDs.length; i++) {
                 int next = i + 1;
-                if(next < currKeys.length) { //Next is in the array
-                    if(currKeys[i]+1 != currKeys[next]) {
+                if(next < currIDs.length) { //Next is in the array
+                    if(currIDs[i]+1 != currIDs[next]) {
                         //Then next value is has free gap of at least 1
                         //Return the free gap
                         value = i + 1;
@@ -64,11 +61,11 @@ public class TagCommandList {
         return value;
     }
     
-    protected String getCommandName() {
+    protected String getCommandName(String _name) {
         return this.name;
     }
     
-    protected Integer getParamKey(int i) {
+    protected Integer getCommandKey(int i) {
         return this.parameters.get(i).key;
     }
     
@@ -86,11 +83,11 @@ public class TagCommandList {
         return val;
     }
     
-    protected Integer getParamCount() {
+    protected Integer getCommandCount() {
         return this.parameters.size();
     }
     
-    protected TagParameters getParams(int index) {
+    protected TagParameters getCommands(int index) {
         return this.parameters.get(index);
     }
     
@@ -98,7 +95,7 @@ public class TagCommandList {
         name = _name;
     }
     
-    protected void updateParamByKey(Integer key, String[] coms) {
+    protected void updateCommandsByKey(Integer key, String[] coms) {
         int index = this.getIndexByKey(key);
         parameters.get(index).params = coms;
     }

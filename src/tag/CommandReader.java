@@ -5,7 +5,6 @@
  */
 package tag;
 
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -145,7 +144,7 @@ public class CommandReader {
         }
         
         if(isFree) {
-            commands.add(new TagCommandList(getNextParentKey(), name));
+            commands.add(new TagCommandList(name));
         }
     }
     
@@ -170,38 +169,44 @@ public class CommandReader {
         TAG.screen.textArea.append(text);
     }
     
-    protected Integer getCommandKey(TagCommandList list) {
-        return list.key;
+    protected void executeSysCommand(String command, String[] params, String[] text) {
+        
+        if(command.equals("say")) {
+            String speech;
+            speech = parseSay(text);
+
+            this.sayTo("say", speech);
+        }
+        else if(command.equals("close")) {
+            this.close();
+        }
+        else if(command.equals("testp")) {
+            this.testPrintAll();
+        }
     }
     
-    protected Integer getNextParentKey() {
-        Integer value = 1;
-        if(commands != null) {
-            Integer length = commands.size();
-            Integer currKeys[] = new Integer[length];
-            
-            for(int i = 0; i < length; i++) {
-                currKeys[i] = commands.get(i).key;
-            }
-            
-            Arrays.sort(currKeys);      
-            
-            for(int i = 0; i < currKeys.length; i++) {
-                int next = i + 1;
-                if(next < currKeys.length) {//Next is in the array
-                    if(currKeys[i]+1 != currKeys[next]) {
-                        //Then next value is has free gap of at least 1
-                        //Return the free gap
-                        value = i + 1;
-                        break;
-                    }
-                    else { //Next value is not in the array, add to end
-                        value = i + 1;
-                        break;
-                    }
-                }
-            }
+    protected String parseSay(String[] input) {
+        String text = "";
+        String[] speech;
+        
+        int length = input.length;
+        for(int i = 0; i < length; i++) {
+                text += input[i] + " ";
         }
-        return value;
+            
+            text = text.trim();
+            speech = text.split("\"");
+            
+            if(speech.length > 1) {
+                text = speech[1];
+            }
+            else {
+                text = "";
+            }
+        return text;
+    }
+    
+    protected void close() {
+        System.exit(0);
     }
 }

@@ -13,16 +13,13 @@ public class TagParameters {
     protected Integer key;
     protected String sysCommand;
     protected String[] params;
-    protected Integer parent;
 
-    TagParameters(Integer _key, Integer _parent, String command) {
-        this(_key, _parent, command, new String[] {""});
+    TagParameters(Integer i, String command) {
+        this(i, command, new String[] {""});
     }
     
-    TagParameters(Integer _key, Integer _parent, String command, String[] _params) {
+    TagParameters(Integer i, String command, String[] _params) {
         sysCommand = command;
         params = _params;
-        key = _key;
-        parent = _parent;
     }
 }
