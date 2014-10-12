@@ -49,7 +49,9 @@ public class TAG {
         //screen.textArea.append("Testing the APPEND");
                 
         //Add an object to the world
-        world.createNewObject("NEW OBJECT");
+       // world.createNewObject("NEW OBJECT");
+        commander.createNewObject("First Object");
+        commander.createNewObject("Second Object");
         
         //screen.testPrintAll(world);
         

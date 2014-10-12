@@ -22,51 +22,7 @@ public class CommandReader {
         //Read list of valid commands from DB, create array
     }
     
-    protected void testPrintAll() {
-       //Test printing all the objects
-        
-        String testArray[][] =  {
-            {"Prop1","1"},
-            {"Prop2","alpha"},
-            {"Prop3","1"},
-            {"Prop4","alpha"},
-            {"Prop5","$"},
-            {"Prop6","#"},
-            {"Prop7","`"},
-            {"Prop8","0"},
-        
-        };
-               
-        for(TagObject obj : TAG.world.objects) {
-            TAG.screen.textArea.append("\n PRINT ALL OBJECTS: " + obj.getPropByName("name").getPropStrVal() + "\n");
-        }
-            for(int i = 0; i < testArray.length; ++i) {
-            String prop = testArray[i][0];
-            
-            if(testArray[i][1].matches("\\d+")) {
-                TAG.world.objects.get(0).properties.add(new TagProperty(prop, Integer.parseInt(testArray[i][1])));
-            }
-            else {
-               TAG.world.objects.get(0).properties.add(new TagProperty(prop, testArray[i][1]));
-            }
-            
-        }
-            
-        for(TagProperty prop : TAG.world.objects.get(0).properties) {
-            String tempStr;
-            tempStr = prop.getPropName(); 
-            TAG.screen.textArea.append(tempStr + " ");
-            
-            if(prop.hasIntVal()) {
-                tempStr = prop.getPropIntVal().toString() + " is Integer";
-            }
-            else {
-                tempStr = prop.getPropStrVal() + " is String";
-            }
-            
-            TAG.screen.textArea.append(tempStr + "\n");
-        }    
-    }
+
     
     protected void parseCommands(String string) {
         String regex = "(^\')|(^@)|(\\s+)";
@@ -74,10 +30,7 @@ public class CommandReader {
         string = string.trim();
         Boolean isCommand = false;
         String command = null;
-        TagCommandList list;
-        
-        
-       
+        TagCommandList list;        
         
         if(!string.equals("")) {
             if(string.charAt(0) == '\'') {
@@ -157,17 +110,58 @@ public class CommandReader {
         }
     }
     
-    protected void sayTo(String command, String text) {
+protected void sayTo(String command, String text) {
         if(!text.equals("")) {
             this.addText("You " + command + ", \"" + text + "\"\n");
         }
         else {
-            this.addText("Say what?\n");
+            this.addText("Say what? Enclose your speech in quotes\n");
         }
     }
     
     protected void addText(String text) {
         TAG.screen.textArea.append(text);
+    }
+    
+    protected void executeSysCommand(String command, String[] params, String[] text) {
+        
+        if(command.equals("say")) {
+            String speech;
+            speech = parseSay(text);
+
+            this.sayTo("say", speech);
+        }
+        else if(command.equals("close")) {
+            this.close();
+        }
+        else if(command.equals("testp")) {
+            this.testPrintAll();
+        }
+    }
+    
+    protected String parseSay(String[] input) {
+        String text = "";
+        String[] speech;
+        
+        int length = input.length;
+        for(int i = 0; i < length; i++) {
+                text += input[i] + " ";
+        }
+            
+            text = text.trim();
+            speech = text.split("\"");
+            
+            if(speech.length > 1) {
+                text = speech[1];
+            }
+            else {
+                text = "";
+            }
+        return text;
+    }
+    
+    protected void close() {
+        System.exit(0);
     }
     
     protected Integer getCommandKey(TagCommandList list) {
@@ -192,16 +186,68 @@ public class CommandReader {
                     if(currKeys[i]+1 != currKeys[next]) {
                         //Then next value is has free gap of at least 1
                         //Return the free gap
-                        value = i + 1;
+                        value = currKeys[i] + 1;
                         break;
                     }
-                    else { //Next value is not in the array, add to end
-                        value = i + 1;
-                        break;
-                    }
+                   
                 }
+                else { //Next value is not in the array, add to end
+                        value = currKeys[i] + 1;
+                        break;
+                }
+                
             }
         }
+        
+        //System.out.println("Gave parent key: " + value);
         return value;
+    }
+    
+    protected void createNewObject(String name) {
+        TAG.world.objects.add(new TagObject(TAG.world, name));
+    }
+    
+    protected void testPrintAll() {
+       //Test printing all the objects
+        
+        String testArray[][] =  {
+            {"Prop1","1"},
+            {"Prop2","alpha"},
+            {"Prop3","1A"},
+        };
+        
+        Integer numObj = TAG.world.objects.size();
+        
+        for(int j = 0; j < numObj; j++) {
+        //for(TagObject obj : TAG.world.objects) {
+            TAG.screen.textArea.append("PRINT ALL OBJECTS: " +
+                    TAG.world.objects.get(j).objectName + "\n");
+            
+            for(int i = 0; i < testArray.length; ++i) {
+            String prop = testArray[i][0];
+            
+                if(testArray[i][1].matches("\\d+")) {
+                    TAG.world.objects.get(j).properties.add(new TagProperty(TAG.world.objects.get(j).objectID, prop, Integer.parseInt(testArray[i][1])));
+                }
+                else {
+                   TAG.world.objects.get(j).properties.add(new TagProperty(TAG.world.objects.get(j).objectID, prop, testArray[i][1]));
+                }
+            }   
+            
+            for(TagProperty prop : TAG.world.objects.get(j).properties) {
+                String tempStr;
+                tempStr = prop.getPropName(); 
+                TAG.screen.textArea.append(tempStr + " ");
+
+                if(prop.hasIntVal()) {
+                    tempStr = prop.getPropIntVal().toString() + " is Integer";
+                }
+                else {
+                    tempStr = prop.getPropStrVal() + " is String";
+                }
+
+                TAG.screen.textArea.append(tempStr + "\n");
+            }
+        }
     }
 }

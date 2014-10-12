@@ -50,17 +50,18 @@ public class TagCommandList {
                     if(currKeys[i]+1 != currKeys[next]) {
                         //Then next value is has free gap of at least 1
                         //Return the free gap
-                        value = i + 1;
+                        value = currKeys[i] + 1;
                         break;
                     }
-                    else { //Next value is not in the array, add to end
-                        value = i + 1;
+                    
+                }
+                else { //Next value is not in the array, add to end
+                        value = currKeys[i] + 1;
                         break;
-                    }
                 }
             }
         }
-        
+        System.out.println("Gave child key: " + key + ":" + value);
         return value;
     }
     

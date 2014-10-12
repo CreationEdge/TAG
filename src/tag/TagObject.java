@@ -14,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class TagObject {
     
     
-    int objectID;       //Should be unique key
+    Integer objectID;       //Should be unique key
     String objectName;  //Not necessarily unique
     CopyOnWriteArrayList<TagProperty> properties;
     
@@ -23,7 +23,7 @@ public class TagObject {
     
     private void mkDummyProps() {
         for(int i = 0; i < 50; ++i) {
-            tempProp = new TagProperty(Integer.toString(i));
+            tempProp = new TagProperty(objectID, Integer.toString(i));
             if(i%2 == 0) {
                 tempProp.setPropIntVal(i);
             }
@@ -38,22 +38,26 @@ public class TagObject {
     //World has list of object #'s
        
     TagObject(TagWorld world){
-        this(world, "Object");
+        this(world, world.getNextFree(), "Object");
       //  tagWorld.addToWorld(objectID, objectName);
     }
     
     TagObject(TagWorld world, String name) {
-        this(world, world.getNextFree().toString(), name);
+        this(world, world.getNextFree(), name);
         
        // this.mkDummyProps();
        // tagWorld.addToWorld(objectID, objectName);
     }  
     
-    TagObject(TagWorld world, String id, String name) {
+    TagObject(TagWorld world, Integer id, String name) {
         properties = new CopyOnWriteArrayList<>();
+        objectID = id;
+        objectName = name;
         
-        properties.add(new TagProperty("id", Integer.parseInt(id)));
-        properties.add(new TagProperty("name", name));
+//        properties.add(new TagProperty(objectID, "id", id));
+//        properties.add(new TagProperty(objectID, "name", name));
+//        
+        System.out.println("Created object " + name + " with ID: " + id);
     }
     
     protected TagProperty getPropByName(String name) {
